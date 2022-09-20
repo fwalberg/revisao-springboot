@@ -3,7 +3,10 @@ package com.springnaunha.springboot.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +30,16 @@ public class FilmesController {
 
     
     @GetMapping
-    public List<Filmes> list() {
+    public ResponseEntity<List<Filmes>> list() {
         dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now());
-        return filmesService.listAll();
+        return new ResponseEntity<>(filmesService.listAll(), HttpStatus.OK);
+        //return ResponseEntity.ok(filmesService.listaAll());
+
+    }
+
+    @GetMapping(path="/{id}")
+    public ResponseEntity<Filmes> findById(@PathVariable long id) {
+        return ResponseEntity.ok(filmesService.findById(id));
 
     }
 }
